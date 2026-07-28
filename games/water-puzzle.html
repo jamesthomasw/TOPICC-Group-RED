@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Puzzle</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="water-puzzle-instructions" class="water-puzzle">
+        <h1>Next Pos Game</h1>
+        <h2>Clue:</h2>
+        <img src="assets/water-puzzle.jpg" style="max-width: 80%;" alt="area_toilet_wanita_LT1">
+        <p style="font-size: 0.8em;">Note: Semua Pos Game berada di DALAM AREA UNIPLAZA & TENGAH</p>
+        <button id="water-puzzle-start">Saya Sudah Sampai</button>
+    </div>
+    <div id="water-puzzle-mission" class="water-puzzle" style="display: none;">
+        <h1>WATER PUZZLE</h1>
+        <p>Tim anda harus menyelesaikan tantangan yang diberikan dalam batas waktu yang telah ditentukan.</p>
+        <p>Penjaga pos akan memberikan gem dan kunci berisikan clue menuju ke pos selanjutnya bagi kelompok yang berhasil menyelesaikan tantangan.</p>
+        <form id="answerForm-water-puzzle-mission">
+            <input type="text" id="answerInput-water-puzzle-mission" placeholder="Masukkan kunci anda di sini" required>
+            <br>
+            <button type="submit">Kirim Kunci</button>
+        </form>
+        <div id="water-puzzle-mission-correct-answer" style="display: none;">
+            <p>Kunci benar! <br> Anda telah menyelesaikan misi di Pos 5 (PURPLE) - WATER PUZZLE.</p>
+            <p>Penjaga pos akan memberikan gem dan kunci berisikan clue menuju ke pos selanjutnya. Tekan tombol "Next" untuk melihat clue menuju pos selanjutnya.</p>
+            <button id="water-puzzle-end" onclick="window.location.href='harmony-in-diversity.html'">Next</button>
+        </div>
+        <p id="water-puzzle-mission-wrong-answer" style="display: none;">Kunci salah, coba lagi.</p>
+    </div>
+    <script>
+        document.getElementById('water-puzzle-start').addEventListener('click', function() {
+            document.getElementById('water-puzzle-instructions').style.display = 'none';
+            document.getElementById('water-puzzle-mission').style.display = 'flex';
+        });
+
+        document.getElementById('answerForm-water-puzzle-mission').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const userKey = document.getElementById('answerInput-water-puzzle-mission').value.trim().toUpperCase();
+
+            fetch('key/water-puzzle-key.txt')
+                .then(response => response.text())
+                .then(data => {
+                    const answers = data.split('\n').map(a => a.trim().toUpperCase());
+                    if (answers.includes(userKey)) {
+                        document.getElementById('water-puzzle-mission-correct-answer').style.display = 'flex';
+                        document.getElementById('water-puzzle-mission-wrong-answer').style.display = 'none';
+                    } else {
+                        document.getElementById('water-puzzle-mission-correct-answer').style.display = 'none';
+                        document.getElementById('water-puzzle-mission-wrong-answer').style.display = 'flex';
+                    }
+                });
+        });
+    </script>
+</body>
+</html>
